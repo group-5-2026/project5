@@ -1,9 +1,9 @@
-# \<Project Name\> Scrum Team
+# \<Photo Sharing App - Sprint 1\> Scrum Team
 ## Product Owner
-\<Team Member Name\>
+\<Nick Weiglt\>
 ## Scrum Master
-\<Team Member Name\>
+\<Joshalin Rivera M\>
 ## Developers
-- \<Team Member Name\>
-- \<Team Member Name\>
-- \<Team Member Name\>
+- \<Andrew Garcia\>
+- \<Nathaniel Rivera\>
+- \<Jennifer Vazquez\>
