@@ -4,6 +4,7 @@ import {
   List,
   ListItemButton,
   ListItemText,
+  Typography,
 }
 from '@mui/material';
 import './userList.css';
@@ -53,23 +54,31 @@ class UserList extends React.Component {
     }
 
   render() {
-    return this.state.users ?(
-        <div>
+    return (
+      <div>
+        <Typography variant="body1">
+          This is the user list, which takes up 3/12 of the window.
+          You might choose to use <a href="https://mui.com/components/lists/">Lists</a> and <a href="https://mui.com/components/dividers/">Dividers</a> to
+          display your users like so:
+        </Typography>
         <List component="nav">
-            {
-                this.state.users.map(user => (
-                <ListItemButton selected={this.state.user_id === user._id}
-                                key={user._id}
-                                divider={true}
-                                component="a" href={"#/photos/" + user._id}>
-                    <ListItemText primary={user.first_name + " " + user.last_name} />
-                </ListItemButton>
-            ))
-            }
+          <ListItem>
+            <ListItemText primary="Item #1" />
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemText primary="Item #2" />
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemText primary="Item #3" />
+          </ListItem>
+          <Divider />
         </List>
-        </div>
-    ) : (
-        <div/>
+        <Typography variant="body1">
+          The model comes in from window.models.userListModel()
+        </Typography>
+      </div>
     );
   }
 }
