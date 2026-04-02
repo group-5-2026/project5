@@ -2,9 +2,11 @@ import React from 'react';
 import {
   AppBar, Toolbar, Typography
 } from '@mui/material';
-import './TopBar.css';
-import fetchModel from "../../lib/fetchModelData";
+
 import { withRouter } from "react-router-dom";
+import fetchModel from "../../lib/fetchModelData";
+import './TopBar.css';
+
 
 
 /**
@@ -51,15 +53,19 @@ class TopBar extends React.Component {
       }
     }
     }
-    return ( <AppBar className="topbar-appBar" position="absolute">
-            <Toolbar>
-            <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>Nick Weigelt</Typography>
-              <Typography variant="h5" color="inherit"> {contextText} </Typography>
-            </Toolbar>
-            </AppBar>
-            );
+    return (
+      <AppBar className="topbar-appBar" position="absolute">
+        <Toolbar>
+          <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+            Nick Weigelt
+          </Typography>
+          <Typography variant="h5" color="inherit">
+            {contextText}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+    );
   }
 
 }
 export default withRouter(TopBar);
-
