@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import './userDetail.css';
 
 /**
@@ -49,6 +49,9 @@ class UserDetail extends React.Component {
         <Typography variant="body1">
           Occupation: {user.occupation}
         </Typography>
+        <Button variant="contained" component="a" href={"#/photos/" + user._id}>
+        View Photos
+        </Button>
       </div>
     );
   }
