@@ -69,7 +69,7 @@ class UserPhotos extends React.Component {
                                        value={item.date_time} />
                             <ImageListItem key={item.file_name}>
                                 <img
-                                    src={`public/images/${item.file_name}`}
+                                    src={`/images/${item.file_name}`}
                                     alt={item.file_name}
                                     loading="lazy"
                                 />
