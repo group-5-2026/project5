@@ -32,23 +32,27 @@ class UserPhotos extends React.Component {
         }
     }
 
-    handleUserChange(user_id){
-        fetchModel("/photosOfUser/" + user_id)
-            .then((response) =>
-            {
-                this.setState({
-                    user_id : user_id,
-                    photos: response.data
-                });
-            });
-        fetchModel("/user/" + user_id)
-            .then((response) =>
-            {
-                const new_user = response.data;
-                const main_content = "User Photos for " + new_user.first_name + " " + new_user.last_name;
-                this.props.changeMainContent(main_content);
-            });
+    handleUserChange(user_id) {
+    // 1. Get Photos using the local model instead of fetchModel
+    const photos = window.models.photoOfUserModel(user_id);
+
+    
+    // 2. Get User info using the local model
+    const user = window.models.userModel(user_id);
+
+    if (user) {
+        const main_content = "User Photos for " + user.first_name + " " + user.last_name;
+        //this.props.changeMainContent(main_content);
     }
+    if (typeof this.props.changeMainContent === "function") {
+        this.props.changeMainContent(main_content);
+    }
+
+    this.setState({
+        user_id: user_id,
+        photos: photos
+    });
+}
 
     render() {
         return this.state.user_id ? (
@@ -65,8 +69,7 @@ class UserPhotos extends React.Component {
                                        value={item.date_time} />
                             <ImageListItem key={item.file_name}>
                                 <img
-                                    src={`images/${item.file_name}`}
-                                    srcSet={`images/${item.file_name}`}
+                                    src={`public/images/${item.file_name}`}
                                     alt={item.file_name}
                                     loading="lazy"
                                 />
