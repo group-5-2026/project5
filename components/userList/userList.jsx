@@ -1,86 +1,54 @@
-import { withRouter } from 'react-router-dom';
 import React from 'react';
 import {
+  Divider,
   List,
-  ListItemButton,
+  ListItem,
   ListItemText,
+  ListItemButton,
   Typography,
-}
-from '@mui/material';
+} from '@mui/material';
+import { Link } from 'react-router-dom';
 import './userList.css';
-import fetchModel from "../../lib/fetchModelData";
 
 /**
  * Define UserList, a React component of project #5
  */
 class UserList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-                users: undefined,
-                user_id: undefined
-            };
-    }
-
-    componentDidMount() {
-        this.handleUserListChange();
-    }
-
-    componentDidUpdate() {
-        const new_user_id = this.props.match?.params?.userId; // add the extra '?'
-        //console.log(new_user_id);
-        const current_user_id = this.state.user_id;
-        //console.log(current_user_id);
-        if (current_user_id  !== new_user_id){
-            this.handleUserChange(new_user_id);
-        }
-    }
-
-    handleUserChange(user_id){
-        this.setState({
-            user_id: user_id
-        });
-    }
-
-    handleUserListChange(){
-        fetchModel("/user/list")
-            .then((response) =>
-            {
-                console.log("SIDEBAR DATA ARRIVED:", response); // ADD THIS LINE
-                this.setState({
-                    users: response.data
-                });
-            });
-    }
+  constructor(props) {
+    super(props);
+  }
 
   render() {
+    // Fetch users from the model
+    const users = window.models.userListModel();
+
     return (
       <div>
-        <Typography variant="body1">
-          This is the user list, which takes up 3/12 of the window.
-          You might choose to use <a href="https://mui.com/components/lists/">Lists</a> and <a href="https://mui.com/components/dividers/">Dividers</a> to
-          display your users like so:
+        {/* Optional header */}
+        <Typography variant="h6" sx={{ padding: '10px' }}>
+          Users
         </Typography>
+
         <List component="nav">
-          <ListItem>
-            <ListItemText primary="Item #1" />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText primary="Item #2" />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText primary="Item #3" />
-          </ListItem>
-          <Divider />
+          {users.map((user) => (
+            <React.Fragment key={user._id}>
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to={`/users/${user._id}`}
+                >
+                  <ListItemText
+                    primary={`${user.first_name} ${user.last_name}`}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <Divider />
+            </React.Fragment>
+          ))}
         </List>
-        <Typography variant="body1">
-          The model comes in from window.models.userListModel()
-        </Typography>
       </div>
     );
   }
 }
 
-export default withRouter(UserList);
+export default UserList;

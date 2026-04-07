@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  HashRouter, Route, Switch, Redirect
+  HashRouter, Route, Switch
 } from 'react-router-dom';
 import {
-  Grid, Paper
+  Grid, Typography, Paper
 } from '@mui/material';
 import './styles/main.css';
 
+// import necessary components
 import TopBar from './components/topBar/TopBar';
 import UserDetail from './components/userDetail/userDetail';
 import UserList from './components/userList/userList';
@@ -16,10 +17,6 @@ import UserPhotos from './components/userPhotos/userPhotos';
 class PhotoShare extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      main_content: undefined
-    };
-    this.changeMainContent = this.changeMainContent.bind(this);
   }
 
   render() {
@@ -70,6 +67,6 @@ class PhotoShare extends React.Component {
 
 
 ReactDOM.render(
-  <PhotoShare/>,
-  document.getElementById('photoshareapp')
+  <PhotoShare />,
+  document.getElementById('photoshareapp'),
 );
