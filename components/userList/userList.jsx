@@ -12,6 +12,7 @@ import axios from 'axios'; // Import Axios
 import './userList.css';
 
 /**
+  run node webServer.js in terminal before opening live server
  * Define UserList, a React component of project #5
  */
 class UserList extends React.Component {
