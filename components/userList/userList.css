@@ -1,0 +1,36 @@
+/* Sidebar title styling */
+.user-list-title {
+    background-color: #f5f5f5;
+    font-weight: bold !important;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.MuiListItemButton-root {
+    transition: all 0.2s ease-in-out !important;
+    margin: 4px 8px !important;
+    border-radius: 8px !important;
+}
+
+/* Hover effect for list items */
+.MuiListItemButton-root:hover {
+    background-color: #e3f2fd !important; /* Very light blue */
+    padding-left: 24px !important;
+}
+
+/* Active/Selected link styling */
+.MuiListItemButton-root.Mui-selected {
+    background-color: #1976d2 !important;
+    color: white !important;
+}
+
+.MuiDivider-root {
+    margin: 0 16px !important;
+    opacity: 0.6;
+}
+
+/* Text styling within the list */
+.MuiListItemText-primary {
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+}
