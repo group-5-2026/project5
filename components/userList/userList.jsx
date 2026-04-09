@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import axios from 'axios'; // Import Axios
 import './userList.css';
 
 /**
@@ -16,15 +17,37 @@ import './userList.css';
 class UserList extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      users: [],
+      error: null
+    };
+  }
+
+  componentDidMount() {
+    // Fetch users from the Express server
+    axios.get('http://localhost:3001/user/list')
+      .then((response) => {
+        this.setState({ users: response.data });
+      })
+      .catch((err) => {
+        console.error("Error fetching user list:", err);
+        this.setState({ error: "Failed to load user list" });
+      });
   }
 
   render() {
-    // Fetch users from the model
-    const users = window.models.userListModel();
+    const { users, error } = this.state;
+
+    if (error) {
+      return <Typography color="error" sx={{ p: 2 }}>{error}</Typography>;
+    }
+
+    if (users.length === 0) {
+      return <Typography sx={{ p: 2 }}>Loading users...</Typography>;
+    }
 
     return (
       <div>
-        {/* Optional header */}
         <Typography variant="h6" sx={{ padding: '10px' }}>
           Users
         </Typography>
