@@ -48,7 +48,7 @@ class UserList extends React.Component {
 
     return (
       <div>
-        <Typography variant="h6" sx={{ padding: '10px' }}>
+        <Typography variant="h6" className="user-list-title" sx={{padding: '15px' }}>
           Users
         </Typography>
 
