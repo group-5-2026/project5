@@ -1,1 +1,40 @@
+/* Container for the user profile details */
+.user-detail-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 
+/* Styling for the user's name (h4) */
+.user-detail-container h4 {
+    color: #1976d2;
+    font-weight: 600;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+/* Styling for the detail labels (using bolding) */
+.user-detail-container strong {
+    color: #555;
+    min-width: 100px;
+    display: inline-block;
+}
+
+/* Button positioning */
+.user-detail-container a {
+    align-self: flex-start;
+    margin-top: 20px;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.user-detail-container a:hover {
+    transform: translateY(-2px);
+}
