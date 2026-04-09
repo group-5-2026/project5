@@ -37,6 +37,11 @@ mongoose.Promise = require("bluebird");
 const async = require("async");
 const express = require("express");
 const app = express();
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // Load the Mongoose schema for User, Photo, and SchemaInfo
 const User = require("./schema/user.js");
@@ -254,7 +259,7 @@ app.get('/photosOfUser/:id', async function (request, response) {
   }
 });
 
-const server = app.listen(3000, function () {
+const server = app.listen(3001, function () {
   const port = server.address().port;
   console.log(
     "Listening at http://localhost:" +
