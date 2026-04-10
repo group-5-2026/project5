@@ -2,8 +2,8 @@
 ## Product Owner
 Nick Weiglt
 ## Scrum Master
-Joshalin Rivera M
+Jennifer Vazquez
 ## Developers
 - Andrew Garcia
 - Nathaniel Rivera
-- Jennifer Vazquez
+- Joshalin Rivera M
