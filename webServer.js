@@ -35,13 +35,32 @@ const mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 
 const async = require("async");
+
 const express = require("express");
-const app = express();
+const app = express(); 
+
+const session = require("express-session");
+const bodyParser = require("body-parser");
+const multer = require("multer");
+const fs = require("fs");
+
+// Shared tool for Jennifer's photo uploads
+const processFormBody = multer({storage: multer.memoryStorage()}).single('uploadedphoto');
+
+// 1. Set Headers FIRST
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
+// 2. Then set up Sessions and BodyParser
+app.use(session({
+  secret: "secretKey",
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(bodyParser.json());
 
 // Load the Mongoose schema for User, Photo, and SchemaInfo
 const User = require("./schema/user.js");
@@ -268,3 +287,36 @@ const server = app.listen(3001, function () {
       __dirname
   );
 });
+
+/* =========================================================
+ * SPRINT 3 TEAM REPOSITORY - RESERVED SECTIONS
+ * ========================================================= */
+
+/** PBI 6: LOGIN (NICK) - POST /admin/login */
+// --- START NICK ---
+
+// --- END NICK ---
+
+
+/** PBI 7: REGISTRATION (ANDREW) - POST /user */
+// --- START ANDREW ---
+
+// --- END ANDREW ---
+
+
+/** PBI 8: COMMENTS (NATHANIEL) - POST /commentsOfPhoto/:photo_id */
+// --- START NATHANIEL ---
+
+// --- END NATHANIEL ---
+
+
+/** PBI 9: PHOTO UPLOAD (JENNIFER) - POST /photos/new */
+// --- START JENNIFER ---
+
+// --- END JENNIFER ---
+
+
+/** PBI 10: LOGOUT & SECURITY (JOSHALIN) - POST /admin/logout */
+// --- START JOSHALIN ---
+
+// --- END JOSHALIN ---
