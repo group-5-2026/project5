@@ -58,7 +58,6 @@ Promise.all(removePromises)
           // Set the unique ID of the object. We use the MongoDB generated _id
           // for now but we keep it distinct from the MongoDB ID so we can go to
           // something prettier in the future since these show up in URLs, etc.
-          userObj.save();
           mapFakeId2RealId[user._id] = userObj._id;
           user.objectID = userObj._id;
           console.log(
@@ -115,6 +114,7 @@ Promise.all(removePromises)
               " of user ID ",
               photoObj.user_id
             );
+            return photoObj.save();
           })
           .catch(function (err) {
             console.error("Error create user", err);

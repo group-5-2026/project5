@@ -312,7 +312,64 @@ const server = app.listen(3001, function () {
 
 /** PBI 9: PHOTO UPLOAD (JENNIFER) - POST /photos/new */
 // --- START JENNIFER ---
+app.post('/photos/new', function (request, response) {
+  processFormBody(request, response, async function (err) {
+    if (err) {
+      console.error("Error processing file:", err);
+      response.status(400).send("Error processing file");
+      return;
+    }
 
+    if (!request.file) {
+      response.status(400).send("No file uploaded");
+      return;
+    }
+
+    try {
+      if (!request.session.user_id) {
+        response.status(401).send("User not logged in");
+        return;
+      }
+
+      const userId = request.session.user_id;
+
+      const timestamp = Date.now();
+      const originalName = request.file.originalname;
+      const extension = originalName.split('.').pop();
+      const uniqueName = `photo_${timestamp}.${extension}`;
+
+      const filePath = __dirname + "/images/" + uniqueName;
+
+      fs.writeFile(filePath, request.file.buffer, async function (err) {
+        if (err) {
+          console.error("Error saving file:", err);
+          response.status(500).send("Error saving file");
+          return;
+        }
+
+        try {
+          const newPhoto = await Photo.create({
+            file_name: uniqueName,
+            date_time: new Date(),
+            user_id: userId,
+            comments: []
+          });
+
+          console.log("Photo uploaded:", uniqueName);
+
+          response.status(200).json(newPhoto);
+        } catch (dbErr) {
+          console.error("Database error:", dbErr);
+          response.status(500).send("Error saving photo to database");
+        }
+      });
+
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      response.status(500).send("Server error");
+    }
+  });
+});
 // --- END JENNIFER ---
 
 
