@@ -300,7 +300,68 @@ const server = app.listen(3001, function () {
 
 /** PBI 7: REGISTRATION (ANDREW) - POST /user */
 // --- START ANDREW ---
+app.post("/user", async function (request, response) {
+  try {
+    const first_name = request.body.first_name || "";
+    const last_name = request.body.last_name || "";
+    const location = request.body.location || "";
+    const description = request.body.description || "";
+    const occupation = request.body.occupation || "";
+    const login_name = request.body.login_name || "";
+    const password = request.body.password || "";
 
+    if (login_name.trim() === "") {
+      response.status(400).send("login_name is required");
+      return;
+    }
+
+    if (first_name.trim() === "") {
+      response.status(400).send("first_name is required");
+      return;
+    }
+
+    if (last_name.trim() === "") {
+      response.status(400).send("last_name is required");
+      return;
+    }
+
+    if (password.trim() === "") {
+      response.status(400).send("password is required");
+      return;
+    }
+
+    const existingUser = await User.findOne({ login_name: login_name });
+    if (existingUser) {
+      response.status(400).send("login_name already exists");
+      return;
+    }
+
+    const newUser = new User({
+      first_name: first_name,
+      last_name: last_name,
+      location: location,
+      description: description,
+      occupation: occupation,
+      login_name: login_name,
+      password: password,
+    });
+
+    await newUser.save();
+
+    response.status(200).send({
+      _id: newUser._id,
+      first_name: newUser.first_name,
+      last_name: newUser.last_name,
+      location: newUser.location,
+      description: newUser.description,
+      occupation: newUser.occupation,
+      login_name: newUser.login_name,
+    });
+  } catch (err) {
+    console.error("Error in /user:", err);
+    response.status(500).send("Server error");
+  }
+});
 // --- END ANDREW ---
 
 
