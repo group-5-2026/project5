@@ -372,8 +372,17 @@ app.post('/photos/new', function (request, response) {
 });
 // --- END JENNIFER ---
 
+/** PBI 10: LOGOUT (JOSHALIN) - POST /admin/logout */
+app.post('/admin/logout', function (request, response) {
+    if (!request.session.user_id) {
+        return response.status(400).send("No user currently logged in.");
+    }
 
-/** PBI 10: LOGOUT & SECURITY (JOSHALIN) - POST /admin/logout */
-// --- START JOSHALIN ---
-
-// --- END JOSHALIN ---
+    request.session.destroy(function (err) {
+        if (err) {
+            console.error("Logout error:", err);
+            return response.status(500).send("Logout failed.");
+        }
+        return response.status(200).send();
+    });
+});
