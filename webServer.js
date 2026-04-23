@@ -294,7 +294,44 @@ const server = app.listen(3001, function () {
 
 /** PBI 6: LOGIN (NICK) - POST /admin/login */
 // --- START NICK ---
+app.post("/admin/login", async function (request, response) {
+  try {
+    const login_name = request.body.login_name;
+    const password = request.body.password;
 
+    // Validate input
+    if (!login_name || !password) {
+      response.status(400).send("Missing login_name or password");
+      return;
+    }
+
+    // Find user
+    const user = await User.findOne({ login_name: login_name });
+
+    if (!user || user.password !== password) {
+      response.status(400).send("Invalid credentials");
+      return;
+    }
+
+    // Save user in session
+    request.session.user_id = user._id;
+
+    // Return user info (no password!)
+    response.status(200).json({
+      _id: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      location: user.location,
+      description: user.description,
+      occupation: user.occupation,
+      login_name: user.login_name,
+    });
+
+  } catch (err) {
+    console.error("Error in /admin/login:", err);
+    response.status(500).send("Server error");
+  }
+});
 // --- END NICK ---
 
 
