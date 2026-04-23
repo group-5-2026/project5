@@ -403,7 +403,53 @@ app.post("/user", async function (request, response) {
 
 
 /** PBI 8: COMMENTS (NATHANIEL) - POST /commentsOfPhoto/:photo_id */
+
 // --- START NATHANIEL ---
+app.post('/commentsOfPhoto/:photo_id', async function (request, response) {
+  try {
+    // 1. Check if user is logged in
+    if (!request.session.user_id) {
+      response.status(401).send("User not logged in");
+      return;
+    }
+
+    const photoId = request.params.photo_id;
+    const commentText = request.body.comment;
+
+    // 2. Validate input
+    if (!commentText || commentText.trim() === "") {
+      response.status(400).send("Comment cannot be empty");
+      return;
+    }
+
+    // 3. Find the photo
+    const photo = await Photo.findById(photoId);
+    if (!photo) {
+      response.status(400).send("Photo not found");
+      return;
+    }
+
+    // 4. Create comment object
+    const newComment = {
+      comment: commentText,
+      user_id: request.session.user_id,
+      date_time: new Date()
+    };
+
+    // 5. Add comment to photo
+    photo.comments.push(newComment);
+
+    // 6. Save to MongoDB
+    await photo.save();
+
+    // 7. Return updated photo (optional but useful)
+    response.status(200).json(photo);
+
+  } catch (err) {
+    console.error("Error in /commentsOfPhoto/:photo_id:", err);
+    response.status(500).send("Server error");
+  }
+});
 
 // --- END NATHANIEL ---
 
