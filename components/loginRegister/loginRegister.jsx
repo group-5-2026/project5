@@ -134,141 +134,150 @@ class LoginRegister extends React.Component {
     }));
   }
 
-  render() {
-    const { user } = this.state;
+render() {
+  const { user } = this.state;
 
+  // If user is already logged in, don't show login form
+  if (this.props.user) {
     return (
-      <div>
-        <Box component="form" autoComplete="off">
-          {this.state.showLoginError && (
-            <Alert severity="error">Login Failed</Alert>
-          )}
-          {this.state.showRegistrationError && (
-            <Alert severity="error">Registration Failed</Alert>
-          )}
-          {this.state.showRegistrationSuccess && (
-            <Alert severity="success">Registration Succeeded</Alert>
-          )}
-
-          <TextField
-            id="login_name"
-            label="Login Name"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            required
-            value={user.login_name}
-            onChange={this.handleChange}
-          />
-
-          <TextField
-            id="password"
-            label="Password"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            type="password"
-            required
-            value={user.password}
-            onChange={this.handleChange}
-          />
-
-          <Box mb={2}>
-            <Button variant="contained" onClick={this.handleLogin}>
-              Login
-            </Button>
-          </Box>
-
-          <Accordion
-            expanded={this.state.showRegistration}
-            onChange={this.handleShowRegistration}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="registration-content"
-              id="registration-header"
-            >
-              <Typography>User Registration</Typography>
-            </AccordionSummary>
-
-            <AccordionDetails>
-              <Box>
-                <TextField
-                  id="password_repeat"
-                  label="Repeat Password"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  type="password"
-                  required={this.state.showRegistration}
-                  value={user.password_repeat}
-                  onChange={this.handleChange}
-                />
-
-                <TextField
-                  id="first_name"
-                  label="First Name"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  required={this.state.showRegistration}
-                  value={user.first_name}
-                  onChange={this.handleChange}
-                />
-
-                <TextField
-                  id="last_name"
-                  label="Last Name"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  required={this.state.showRegistration}
-                  value={user.last_name}
-                  onChange={this.handleChange}
-                />
-
-                <TextField
-                  id="location"
-                  label="Location"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  value={user.location}
-                  onChange={this.handleChange}
-                />
-
-                <TextField
-                  id="description"
-                  label="Description"
-                  variant="outlined"
-                  multiline
-                  rows={4}
-                  fullWidth
-                  margin="normal"
-                  value={user.description}
-                  onChange={this.handleChange}
-                />
-
-                <TextField
-                  id="occupation"
-                  label="Occupation"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  value={user.occupation}
-                  onChange={this.handleChange}
-                />
-
-                <Button variant="contained" onClick={this.handleRegister}>
-                  Register Me
-                </Button>
-              </Box>
-            </AccordionDetails>
-          </Accordion>
-        </Box>
-      </div>
+      <Typography variant="h6">
+        You are already logged in.
+      </Typography>
     );
   }
+
+  return (
+    <div>
+      <Box component="form" autoComplete="off">
+        {this.state.showLoginError && (
+          <Alert severity="error">Login Failed</Alert>
+        )}
+        {this.state.showRegistrationError && (
+          <Alert severity="error">Registration Failed</Alert>
+        )}
+        {this.state.showRegistrationSuccess && (
+          <Alert severity="success">Registration Succeeded</Alert>
+        )}
+
+        <TextField
+          id="login_name"
+          label="Login Name"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          required
+          value={user.login_name}
+          onChange={this.handleChange}
+        />
+
+        <TextField
+          id="password"
+          label="Password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="password"
+          required
+          value={user.password}
+          onChange={this.handleChange}
+        />
+
+        <Box mb={2}>
+          <Button variant="contained" onClick={this.handleLogin}>
+            Login
+          </Button>
+        </Box>
+
+        <Accordion
+          expanded={this.state.showRegistration}
+          onChange={this.handleShowRegistration}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="registration-content"
+            id="registration-header"
+          >
+            <Typography>User Registration</Typography>
+          </AccordionSummary>
+
+          <AccordionDetails>
+            <Box>
+              <TextField
+                id="password_repeat"
+                label="Repeat Password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                type="password"
+                required={this.state.showRegistration}
+                value={user.password_repeat}
+                onChange={this.handleChange}
+              />
+
+              <TextField
+                id="first_name"
+                label="First Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                required={this.state.showRegistration}
+                value={user.first_name}
+                onChange={this.handleChange}
+              />
+
+              <TextField
+                id="last_name"
+                label="Last Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                required={this.state.showRegistration}
+                value={user.last_name}
+                onChange={this.handleChange}
+              />
+
+              <TextField
+                id="location"
+                label="Location"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={user.location}
+                onChange={this.handleChange}
+              />
+
+              <TextField
+                id="description"
+                label="Description"
+                variant="outlined"
+                multiline
+                rows={4}
+                fullWidth
+                margin="normal"
+                value={user.description}
+                onChange={this.handleChange}
+              />
+
+              <TextField
+                id="occupation"
+                label="Occupation"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={user.occupation}
+                onChange={this.handleChange}
+              />
+
+              <Button variant="contained" onClick={this.handleRegister}>
+                Register Me
+              </Button>
+            </Box>
+          </AccordionDetails>
+        </Accordion>
+      </Box>
+    </div>
+  );
+}
 }
 
 export default LoginRegister;
