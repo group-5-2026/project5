@@ -515,7 +515,96 @@ app.post('/photos/new', function (request, response) {
   });
 });
 // --- END JENNIFER ---
+//** PBI 11: Favorites(Nathaniel) */
 
+// --- START FAVORITES ---
+
+/**
+ * Add a photo to favorites
+ * POST /favorites/add/:photo_id
+ */
+app.post('/favorites/add/:photo_id', async function (request, response) {
+  try {
+    // 1. Check login
+    if (!request.session.user_id) {
+      response.status(401).send("User not logged in");
+      return;
+    }
+
+    const userId = request.session.user_id;
+    const photoId = request.params.photo_id;
+
+    // 2. Add to favorites (no duplicates)
+    await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { favorites: photoId } }
+    );
+
+    response.status(200).send("Photo added to favorites");
+
+  } catch (err) {
+    console.error("Error in /favorites/add:", err);
+    response.status(500).send("Server error");
+  }
+});
+
+
+/**
+ * Remove a photo from favorites
+ * POST /favorites/remove/:photo_id
+ */
+app.post('/favorites/remove/:photo_id', async function (request, response) {
+  try {
+    // 1. Check login
+    if (!request.session.user_id) {
+      response.status(401).send("User not logged in");
+      return;
+    }
+
+    const userId = request.session.user_id;
+    const photoId = request.params.photo_id;
+
+    // 2. Remove from favorites
+    await User.findByIdAndUpdate(
+      userId,
+      { $pull: { favorites: photoId } }
+    );
+
+    response.status(200).send("Photo removed from favorites");
+
+  } catch (err) {
+    console.error("Error in /favorites/remove:", err);
+    response.status(500).send("Server error");
+  }
+});
+
+
+/**
+ * Get all favorite photos for logged-in user
+ * GET /favorites
+ */
+app.get('/favorites', async function (request, response) {
+  try {
+    // 1. Check login
+    if (!request.session.user_id) {
+      response.status(401).send("User not logged in");
+      return;
+    }
+
+    // 2. Get user and populate favorites
+    const user = await User.findById(request.session.user_id)
+      .populate('favorites');
+
+    // 3. Return full photo objects
+    response.status(200).json(user.favorites);
+
+  } catch (err) {
+    console.error("Error in /favorites:", err);
+    response.status(500).send("Server error");
+  }
+});
+
+// --- END FAVORITES ---
 /** PBI 10: LOGOUT (JOSHALIN) - POST /admin/logout */
 app.post('/admin/logout', function (request, response) {
     if (!request.session.user_id) {
