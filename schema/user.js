@@ -1,9 +1,7 @@
-"use strict";
-
 const mongoose = require("mongoose");
 
 /**
- * Define the Mongoose Schema for a Comment.
+ * Define the Mongoose Schema for a User.
  */
 const userSchema = new mongoose.Schema({
   first_name: String,
@@ -11,6 +9,10 @@ const userSchema = new mongoose.Schema({
   location: String,
   description: String,
   occupation: String,
+  favorites: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Photo",
+  }],
 });
 
 /**

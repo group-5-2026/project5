@@ -51,6 +51,7 @@ Promise.all(removePromises)
         location: user.location,
         description: user.description,
         occupation: user.occupation,
+        favorites: [],
         login_name: user.last_name.toLowerCase(),
         password: "weak",
       })
@@ -107,7 +108,6 @@ Promise.all(removePromises)
                 );
               });
             }
-            photoObj.save();
             console.log(
               "Adding photo:",
               photo.file_name,
@@ -117,7 +117,7 @@ Promise.all(removePromises)
             return photoObj.save();
           })
           .catch(function (err) {
-            console.error("Error create user", err);
+            console.error("Error create photo", err);
           });
       });
       return Promise.all(photoPromises).then(function () {
