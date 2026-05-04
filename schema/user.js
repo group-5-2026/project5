@@ -9,6 +9,12 @@ const userSchema = new mongoose.Schema({
   location: String,
   description: String,
   occupation: String,
+
+  //  Needed for login (you already use these in webServer.js)
+  login_name: String,
+  password: String,
+
+  //  Favorites feature (you already added this correctly)
   favorites: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Photo",
@@ -24,6 +30,3 @@ const User = mongoose.model("User", userSchema);
  * Make this available to our application.
  */
 module.exports = User;
-
-
-
