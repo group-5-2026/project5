@@ -13,6 +13,9 @@ import TopBar from './components/topBar/TopBar';
 import UserDetail from './components/userDetail/userDetail';
 import UserList from './components/userList/userList';
 import UserPhotos from './components/userPhotos/userPhotos';
+//Imported UserFavortes router
+import UserFavorites from './components/userFavorites/UserFavorites';
+
 
 class PhotoShare extends React.Component {
   constructor(props) {
@@ -35,27 +38,27 @@ class PhotoShare extends React.Component {
         </Grid>
         <Grid item sm={9}>
           <Paper className="main-grid-item">
-            <Switch>
-            <Route exact path="/"
-                render={() => (
-                <Typography variant="body1">
-                  Welcome to your photosharing app! This <a href="https://mui.com/components/paper/">Paper</a> component
-                  displays the main content of the application. The {"sm={9}"} prop in
-                  the <a href="https://mui.com/components/grid/">Grid</a> item component makes it responsively
-                  display 9/12 of the window. The Switch component enables us to conditionally render different
-                  components to this part of the screen. You don&apos;t need to display anything here on the homepage,
-                  so you should delete this Route component once you get started.
-                </Typography>
-                )}
-              />
-              <Route path="/users/:userId"
-                render={ props => <UserDetail {...props} /> }
-              />
-              <Route path="/photos/:userId"
-                render ={ props => <UserPhotos {...props} /> }
-              />
-              <Route path="/users" component={UserList}  />
-            </Switch>
+<Switch>
+  {/* MOVE FAVORITES TO THE TOP */}
+  <Route path="/favorites"
+    render={ props => <UserFavorites {...props} /> }
+  />
+
+  <Route exact path="/"
+    render={() => (
+      <Typography variant="body1">
+        Welcome to your photosharing app!
+      </Typography>
+    )}
+  />
+  <Route path="/users/:userId"
+    render={ props => <UserDetail {...props} /> }
+  />
+  <Route path="/photos/:userId"
+    render ={ props => <UserPhotos {...props} /> }
+  />
+  <Route path="/users" component={UserList}  />
+</Switch>
           </Paper>
         </Grid>
       </Grid>

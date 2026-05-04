@@ -15,9 +15,10 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
-    "@mui/material": "^5.11.8",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^9.0.0",
+    "@mui/material": "^5.18.0",
     "@mui/styles": "^5.11.7",
     "@mui/system": "^5.11.8",
     "@popperjs/core": "^2.11.5",
