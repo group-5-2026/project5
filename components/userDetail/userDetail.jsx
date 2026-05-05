@@ -1,42 +1,40 @@
 import React from 'react';
 import { Typography, Button } from '@mui/material';
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 import './userDetail.css';
 
-/**
- * Define UserDetail, a React component of project #5
- */
 class UserDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: null,
-      error: null // Added to handle error states
+      error: null
     };
   }
 
-  // Helper method to fetch user data to keep code DRY
   fetchUserData(userId) {
-  axios.get(`http://localhost:3001/user/${userId}`) // Change 3000 to 3001
-    .then((response) => {
-      this.setState({ user: response.data, error: null });
-    })
-    .catch((err) => {
-      console.error("Axios Error:", err);
-      this.setState({ error: "User not found or server error" });
-    });
-}
+    if (!userId) return;
+
+    axios.get(`/user/${userId}`)
+      .then((response) => {
+        this.setState({ user: response.data, error: null });
+      })
+      .catch((err) => {
+        console.error("Axios Error:", err);
+        this.setState({ error: "User not found or server error", user: null });
+      });
+  }
 
   componentDidMount() {
-    const userId = this.props.match.params.userId;
+    const userId = this.props.match?.params?.userId;
     this.fetchUserData(userId);
   }
 
   componentDidUpdate(prevProps) {
-    const prevUserId = prevProps.match.params.userId;
-    const currentUserId = this.props.match.params.userId;
+    const prevUserId = prevProps.match?.params?.userId;
+    const currentUserId = this.props.match?.params?.userId;
 
-    // Only fetch if the userId in the URL has actually changed
     if (prevUserId !== currentUserId) {
       this.fetchUserData(currentUserId);
     }
@@ -58,19 +56,13 @@ class UserDetail extends React.Component {
         <Typography variant="h4">
           {user.first_name} {user.last_name}
         </Typography>
-        <Typography variant="body1">
-          <strong>Location:</strong> {user.location}
-        </Typography>
-        <Typography variant="body1">
-          <strong>Description:</strong> {user.description}
-        </Typography>
-        <Typography variant="body1">
-          <strong>Occupation:</strong> {user.occupation}
-        </Typography>
-        
-        <Button 
-          variant="contained" 
-          component="a" 
+
+        <Typography><strong>Location:</strong> {user.location}</Typography>
+        <Typography><strong>Description:</strong> {user.description}</Typography>
+        <Typography><strong>Occupation:</strong> {user.occupation}</Typography>
+
+        <Button
+          variant="contained"
           href={`#/photos/${user._id}`}
           style={{ marginTop: '16px' }}
         >
@@ -81,4 +73,4 @@ class UserDetail extends React.Component {
   }
 }
 
-export default UserDetail;
+export default withRouter(UserDetail);

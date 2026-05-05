@@ -8,13 +8,9 @@ import {
   Typography,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
 import './userList.css';
 
-/**
-  run node webServer.js in terminal before opening live server
- * Define UserList, a React component of project #5
- */
 class UserList extends React.Component {
   constructor(props) {
     super(props);
@@ -25,8 +21,7 @@ class UserList extends React.Component {
   }
 
   componentDidMount() {
-    // Fetch users from the Express server
-    axios.get('http://localhost:3001/user/list')
+    axios.get('/user/list')
       .then((response) => {
         this.setState({ users: response.data });
       })
@@ -40,27 +35,24 @@ class UserList extends React.Component {
     const { users, error } = this.state;
 
     if (error) {
-      return <Typography color="error" sx={{ p: 2 }}>{error}</Typography>;
+      return <Typography color="error">{error}</Typography>;
     }
 
     if (users.length === 0) {
-      return <Typography sx={{ p: 2 }}>Loading users...</Typography>;
+      return <Typography>Loading users...</Typography>;
     }
 
     return (
       <div>
-        <Typography variant="h6" className="user-list-title" sx={{padding: '15px' }}>
+        <Typography variant="h6" sx={{ padding: '15px' }}>
           Users
         </Typography>
 
-        <List component="nav">
+        <List>
           {users.map((user) => (
             <React.Fragment key={user._id}>
               <ListItem disablePadding>
-                <ListItemButton
-                  component={Link}
-                  to={`/users/${user._id}`}
-                >
+                <ListItemButton component={Link} to={`/users/${user._id}`}>
                   <ListItemText
                     primary={`${user.first_name} ${user.last_name}`}
                   />

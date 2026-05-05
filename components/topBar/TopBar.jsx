@@ -2,7 +2,6 @@ import React from 'react';
 import {
   AppBar, Toolbar, Typography, Button
 } from '@mui/material';
-
 import { withRouter } from 'react-router-dom';
 import fetchModel from '../../lib/fetchModelData';
 import './TopBar.css';
@@ -11,25 +10,61 @@ class TopBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      app_info: undefined
+      app_info: undefined,
+      contextText: ''
     };
     this.fileInputRef = React.createRef();
   }
 
   componentDidMount() {
     this.handleAppInfoChange();
+    this.handleContextChange();
   }
 
-  handleAppInfoChange() {
-    if (this.state.app_info === undefined) {
-      fetchModel("/test/info")
-        .then((response) => {
-          this.setState({
-            app_info: response.data
-          });
-        });
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      this.handleContextChange();
     }
   }
+
+  handleAppInfoChange = () => {
+    fetchModel('/test/info')
+      .then((response) => {
+        this.setState({ app_info: response.data });
+      })
+      .catch((err) => {
+        console.error('Error fetching app info:', err);
+      });
+  };
+
+  handleContextChange = () => {
+    const path = this.props.location.pathname;
+    const parts = path.split('/');
+    const userId = parts[2];
+
+    if (!userId) {
+      this.setState({ contextText: '' });
+      return;
+    }
+
+    fetchModel(`/user/${userId}`)
+      .then((response) => {
+        const user = response.data;
+
+        if (path.startsWith('/photos/')) {
+          this.setState({
+            contextText: `Photos of ${user.first_name} ${user.last_name}`
+          });
+        } else if (path.startsWith('/users/')) {
+          this.setState({
+            contextText: `${user.first_name} ${user.last_name}`
+          });
+        }
+      })
+      .catch(() => {
+        this.setState({ contextText: '' });
+      });
+  };
 
   handleAddPhotoClick = () => {
     this.fileInputRef.current.click();
@@ -37,53 +72,41 @@ class TopBar extends React.Component {
 
   handleFileChange = (event) => {
     const file = event.target.files[0];
-    if (!file) return;
+
+    if (!file) {
+      return;
+    }
 
     const formData = new FormData();
-    formData.append("photo", file);
+    formData.append('uploadedphoto', file);
 
-    fetch("/photos/new", {
-      method: "POST",
+    fetch('/photos/new', {
+      method: 'POST',
       body: formData,
-      credentials: "include"
+      credentials: 'include'
     })
       .then((res) => {
-        if (!res.ok) throw new Error("Upload Failed");
+        if (!res.ok) {
+          throw new Error('Upload Failed');
+        }
         return res.json();
       })
       .then(() => {
-        alert("Photo uploaded successfully!");
+        console.log('Photo uploaded successfully');
       })
       .catch((err) => {
-        console.error(err);
-        alert("Error uploading photo");
+        console.error('Error uploading photo:', err);
       });
   };
 
   render() {
-    const path = this.props.location.pathname;
-    let contextText = "";
-
-    const parts = path.split("/");
-    const userId = parts[2];
-
-    if (userId) {
-      const user = window.models.userModel(userId);
-      if (user) {
-        if (path.startsWith("/photos/")) {
-          contextText = `Photos of ${user.first_name} ${user.last_name}`;
-        } else if (path.startsWith("/users/")) {
-          contextText = `${user.first_name} ${user.last_name}`;
-        }
-      }
-    }
-
-    const isLoggedIn = this.state.app_info?.loggedIn;
+    const { contextText, app_info } = this.state;
+    const isLoggedIn = app_info !== undefined;
 
     return (
       <AppBar className="topbar-appBar" position="absolute">
         <Toolbar>
-          <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h5" sx={{ flexGrow: 1 }}>
             Nick Weigelt
           </Typography>
 
@@ -93,11 +116,9 @@ class TopBar extends React.Component {
 
           {isLoggedIn && (
             <>
-              {/* ✅ FAVORITES LINK */}
               <Button
                 color="inherit"
-                component="a"
-                href="#/favorites"
+                onClick={() => this.props.history.push('/favorites')}
               >
                 Favorites
               </Button>
