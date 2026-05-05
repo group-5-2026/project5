@@ -13,7 +13,7 @@ class UserPhotos extends React.Component {
       user_id: undefined,
       photos: [],
       error: null,
-      commentTexts: {}   // per-photo comment storage
+      commentTexts: {}
     };
   }
 
@@ -60,7 +60,6 @@ class UserPhotos extends React.Component {
       });
   }
 
-  //  handle text input per photo
   handleCommentChange = (photoId, value) => {
     this.setState((prevState) => ({
       commentTexts: {
@@ -70,10 +69,8 @@ class UserPhotos extends React.Component {
     }));
   };
 
-  //  submit comment
   handleSubmitComment = (photoId) => {
     const comment = this.state.commentTexts[photoId];
-
     if (!comment || comment.trim() === "") return;
 
     axios.post(
@@ -97,6 +94,24 @@ class UserPhotos extends React.Component {
     .catch((err) => {
       console.error("Error posting comment:", err);
     });
+  };
+
+  // ✅ FAVORITE HANDLER
+  handleFavorite = (photoId) => {
+    axios.post(`http://localhost:3001/photos/${photoId}/favorite`)
+      .then(() => {
+        return axios.get(
+          `http://localhost:3001/photosOfUser/${this.state.user_id}`
+        );
+      })
+      .then((response) => {
+        this.setState({
+          photos: response.data
+        });
+      })
+      .catch((err) => {
+        console.error("Error favoriting photo:", err);
+      });
   };
 
   render() {
@@ -141,6 +156,16 @@ class UserPhotos extends React.Component {
                   loading="lazy"
                 />
               </ImageListItem>
+
+              {/* ✅ FAVORITE BUTTON */}
+              <Button
+                variant="contained"
+                disabled={item.isFavorited}
+                onClick={() => this.handleFavorite(item._id)}
+                sx={{ mt: 1, mb: 2 }}
+              >
+                {item.isFavorited ? "Favorited" : "Favorite"}
+              </Button>
 
               {/* COMMENTS */}
               {item.comments && item.comments.length > 0 ? (
@@ -196,7 +221,6 @@ class UserPhotos extends React.Component {
                 />
               )}
 
-              {/*  ADD COMMENT INPUT */}
               <TextField
                 label="Add Comment"
                 variant="outlined"
