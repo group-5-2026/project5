@@ -4,16 +4,9 @@ import {
 } from '@mui/material';
 
 import { withRouter } from 'react-router-dom';
-//import async from 'async';
 import fetchModel from '../../lib/fetchModelData';
 import './TopBar.css';
 
-
-
-
-/**
- * Define TopBar, a React componment of project #5
- */
 class TopBar extends React.Component {
   constructor(props) {
     super(props);
@@ -28,10 +21,9 @@ class TopBar extends React.Component {
   }
 
   handleAppInfoChange() {
-    if(this.state.app_info === undefined){
+    if (this.state.app_info === undefined) {
       fetchModel("/test/info")
-      .then((response) =>
-        {
+        .then((response) => {
           this.setState({
             app_info: response.data
           });
@@ -45,7 +37,6 @@ class TopBar extends React.Component {
 
   handleFileChange = (event) => {
     const file = event.target.files[0];
-
     if (!file) return;
 
     const formData = new FormData();
@@ -57,9 +48,7 @@ class TopBar extends React.Component {
       credentials: "include"
     })
       .then((res) => {
-        if (!res.ok) {
-          throw new Error("Upload Failed");
-        }
+        if (!res.ok) throw new Error("Upload Failed");
         return res.json();
       })
       .then(() => {
@@ -83,7 +72,7 @@ class TopBar extends React.Component {
       if (user) {
         if (path.startsWith("/photos/")) {
           contextText = `Photos of ${user.first_name} ${user.last_name}`;
-        } else if (path.startsWith("/users/")){
+        } else if (path.startsWith("/users/")) {
           contextText = `${user.first_name} ${user.last_name}`;
         }
       }
@@ -98,12 +87,21 @@ class TopBar extends React.Component {
             Nick Weigelt
           </Typography>
 
-          <Typography variant="h6" sx={{ marginRight: 2}}>
+          <Typography variant="h6" sx={{ marginRight: 2 }}>
             {contextText}
           </Typography>
 
           {isLoggedIn && (
             <>
+              {/* ✅ FAVORITES LINK */}
+              <Button
+                color="inherit"
+                component="a"
+                href="#/favorites"
+              >
+                Favorites
+              </Button>
+
               <Button
                 color="inherit"
                 variant="outlined"
@@ -111,7 +109,7 @@ class TopBar extends React.Component {
               >
                 Add Photo
               </Button>
-              
+
               <input
                 type="file"
                 hidden
@@ -125,4 +123,5 @@ class TopBar extends React.Component {
     );
   }
 }
+
 export default withRouter(TopBar);
